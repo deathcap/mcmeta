@@ -1,5 +1,13 @@
 'use strict';
 
+var upTo = function(n) {
+  var a = [];
+  for (var i = 0; i < n; i += 1) {
+    a.push(i);
+  }
+  return a;
+};
+
 var parseMcmeta = function(image, data) {
   var json = JSON.parse(data);
 
@@ -31,8 +39,10 @@ var parseMcmeta = function(image, data) {
 
   var frames = [];
 
-  for (i = 0; i < json.animation.frames.length; i += 1) {
-    var frameInfo = json.animation.frames[i];
+  var frameInfos = json.animation.frames || upTo(animationWidth * animationHeight);
+
+  for (i = 0; i < frameInfos.length; i += 1) {
+    var frameInfo = frameInfos[i];
 
     var index = (typeof frameInfo === 'number') ? frameInfo : frameInfo.index;
     var time = (typeof frameInfo === 'object' && 'time' in frameInfo) ? frameInfo.time : 1;
@@ -59,11 +69,12 @@ parseMcmeta(image, JSON.stringify(
       "width":1,
       "height":7,
       "frametime":1,
-      "frames":[{
+      /*"frames":[{
          "index":0,
          "time": 0
          },
          1,2,3,4,5,6,4,2]
+         */
    }
 }));
 
