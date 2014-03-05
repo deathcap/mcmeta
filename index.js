@@ -16,7 +16,16 @@ var parseMcmeta = function(image, data) {
   var tileWidth = image.width / animationWidth;
   var tileHeight = image.height / animationHeight;
 
-  console.log(tileWidth, tileHeight);
+  for (var j = 0; j < animationWidth; j += 1) {
+    for (var i = 0; i < animationHeight; i += 1) {
+      var sx = j * tileWidth;
+      var sy = i * tileHeight;
+      var ex = (j + 1) * tileWidth;
+      var ey = (i + 1) * tileHeight;
+
+      console.log('frame (',sx,sy,') - (',ex,ey,')');
+    }
+  }
 };
 
 var image = {width:16, height:16*7}; // TODO: real image
