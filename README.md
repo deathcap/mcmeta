@@ -1,0 +1,6 @@
+# mcmeta
+
+## License
+
+MIT
+
