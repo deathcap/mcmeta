@@ -59,6 +59,16 @@ var parseMcmeta = function(image, data) {
     frames.push({coords:[0, 0, tileWidth, tileHeight]}); // TODO: or full texture?
   }
 
+  if (json.texture) {
+    if (json.texture.blur) {
+      // TODO: blur when close up
+    }
+
+    if (json.texture.clamp) {
+      // TODO: don't appear when otherwise might(?)
+    }
+  }
+
   console.log(frames);
 };
 
