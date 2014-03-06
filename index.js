@@ -2,7 +2,6 @@
 
 var getPixels = require('get-pixels');
 var savePixels = require('save-pixels');
-var pipette = require('pipette');
 
 var upTo = function(n) {
   var a = [];
@@ -133,13 +132,6 @@ getPixels(waterFlow2, function(err, pixels) {
       document.body.appendChild(canvas);
       document.body.appendChild(document.createElement('br'));
       console.log(canvas.width,canvas.height);
-
-      /* supposed to .pipe().. but source is not an EventEmitter?
-      var sink = new pipette.Sink(savePixels(tilePixels, 'canvas'));
-      sink.on('data', function(buffer) {
-        console.log(buffer);
-      });
-      */
     }
   }
 });
