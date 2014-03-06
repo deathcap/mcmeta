@@ -123,7 +123,7 @@ getPixels(waterFlow2, function(err, pixels) {
       var ey = (i + 1) * tileHeight;
 
       console.log(sx,sy,ex,sy);
-      var tilePixels = pixels.lo(sx, sy).hi(ex, ey); // TODO: fix indexing; too large (2nd is 32x16, expect (0,16)-(16,32)=the lower 16x16)
+      var tilePixels = pixels.lo(sy, sx).hi(ey - sy, ex - sx);
       console.log(tilePixels);
 
       var canvas = savePixels(tilePixels, 'canvas');
