@@ -2,6 +2,7 @@
 
 var getPixels = require('get-pixels');
 var savePixels = require('save-pixels');
+var pipette = require('pipette');
 
 var upTo = function(n) {
   var a = [];
@@ -123,10 +124,22 @@ getPixels(waterFlow2, function(err, pixels) {
       var ey = (i + 1) * tileHeight;
 
       console.log(sx,sy,ex,sy);
-      var tilePixels = pixels.lo(sx, sy).hi(ex, ey);
+      var tilePixels = pixels.lo(sx, sy).hi(ex, ey); // TODO: fix indexing; too large (2nd is 32x16, expect (0,16)-(16,32)=the lower 16x16)
       console.log(tilePixels);
 
-      //savePixels(tilePixels, 'png').pipe( // TODO
+      var canvas = savePixels(tilePixels, 'canvas');
+      document.body.appendChild(document.createTextNode([sx,sy,ex,ey].join(',')));
+      document.body.appendChild(document.createElement('br'));
+      document.body.appendChild(canvas);
+      document.body.appendChild(document.createElement('br'));
+      console.log(canvas.width,canvas.height);
+
+      /* supposed to .pipe().. but source is not an EventEmitter?
+      var sink = new pipette.Sink(savePixels(tilePixels, 'canvas'));
+      sink.on('data', function(buffer) {
+        console.log(buffer);
+      });
+      */
     }
   }
 });

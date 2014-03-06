@@ -11,7 +11,8 @@
   ],
   "dependencies": {
     "get-pixels": "~1.0.1",
-    "save-pixels": "~0.3.0"
+    "save-pixels": "~0.3.0",
+    "pipette": "~0.9.3"
   },
   "scripts": {
     "start": "beefy index.js"
