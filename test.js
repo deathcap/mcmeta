@@ -5,7 +5,7 @@ var test = require('tape');
 
 var parseMcmeta = mcmeta.parseMcmeta;
 
-test('sample', function(t) {
+test('animation sample', function(t) {
   // http://minecraft.gamepedia.com/Resource_pack#Animation_Properties
   var input = JSON.stringify({ 
    "animation":{
@@ -37,15 +37,33 @@ test('sample', function(t) {
   t.end();
 });
 
-// TODO
-parseMcmeta({width:16, height:16*7}, JSON.stringify(
-{
-  "animation":{}
-}));
+test('empty animation, 16x(16*7)', function(t) {
+  var output = parseMcmeta({width:16, height:16*7}, JSON.stringify(
+  {
+    "animation":{}
+  }));
 
-parseMcmeta({width:16, height:16*7}, JSON.stringify(
-{
-}));
+  console.log(output);
+  t.deepEqual(output,
+    [ { index: 0, time: 1, coords: [ 0, 0, 16, 16 ] },
+      { index: 1, time: 1, coords: [ 0, 16, 16, 32 ] },
+      { index: 2, time: 1, coords: [ 0, 32, 16, 48 ] },
+      { index: 3, time: 1, coords: [ 0, 48, 16, 64 ] },
+      { index: 4, time: 1, coords: [ 0, 64, 16, 80 ] },
+      { index: 5, time: 1, coords: [ 0, 80, 16, 96 ] },
+      { index: 6, time: 1, coords: [ 0, 96, 16, 112 ] } ]
+    );
+  t.end();
+});
 
+test('empty', function(t) {
+  var output = parseMcmeta({width:16, height:16*7}, JSON.stringify(
+  {
+  }));
 
+  console.log(output);
 
+  t.deepEqual(output,
+    [ { coords: [ 0, 0, 16, 16 ] } ]);
+  t.end();
+});
