@@ -2,6 +2,8 @@
 
 Parse .mcmeta files from Minecraft resource packs
 
+[![Build Status](https://travis-ci.org/deathcap/mcmeta.png)](https://travis-ci.org/deathcap/mcmeta)
+
 
 References:
 
