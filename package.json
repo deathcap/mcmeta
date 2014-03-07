@@ -14,8 +14,12 @@
     "save-pixels": "~0.3.0"
   },
   "scripts": {
-    "start": "beefy index.js"
+    "start": "beefy demo.js",
+    "test": "node test.js"
   },
   "peerDependencies": {},
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "~2.10.2"
+  }
 }
