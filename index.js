@@ -134,9 +134,7 @@ var getFrames = function(pixels, mcmetaString) {
   return flipbook;
 };
 
-// TODO
-module.exports = {
-  getFrames: getFrames,
-  parseFramesInfo: parseFramesInfo,
-  splitTiles: splitTiles
-};
+module.exports = getFrames;
+module.exports.getFrames = getFrames;
+module.exports.parseFramesInfo = parseFramesInfo;
+module.exports.splitTiles = splitTiles;
