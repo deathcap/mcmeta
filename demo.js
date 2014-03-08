@@ -74,7 +74,7 @@ getPixels(waterFlow2, function(err, pixels) {
   window.pixels = pixels;
 
   exampleJsons.forEach(function(json, i) {
-    var editableField = false; //i === exampleJsons.length - 1;
+    var editableField = i === exampleJsons.length - 1;
   
     if (!editableField) {
       document.body.appendChild(document.createTextNode(JSON.stringify(json)));
@@ -89,11 +89,21 @@ getPixels(waterFlow2, function(err, pixels) {
     var output = document.createElement('div');
 
     output.appendChild(document.createElement('br'));
-    var frames = getFrames(pixels, json);
-    output.appendChild(showAnimated(frames));
-    output.appendChild(showFrames(frames));
 
-    output.appendChild(document.createElement('hr'));
+    var render = function(json) {
+      var frames = getFrames(pixels, json);
+      output.appendChild(showAnimated(frames));
+      output.appendChild(showFrames(frames));
+      output.appendChild(document.createElement('hr'));
+    };
+    render(json);
+
+    if (editableField) {
+      inputField.addEventListener('change', function() {
+        while (output.firstChild) output.removeChild(output.firstChild);
+        render(inputField.value);
+      });
+    }
 
     document.body.appendChild(output);
   });
