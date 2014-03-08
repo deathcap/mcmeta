@@ -11,19 +11,17 @@ var upTo = function(n) {
   return a;
 };
 
-var parseMcmeta = function(image, data) {
-  var json = JSON.parse(data);
-
+var parseFrameOffsets = function(imageWidth, imageHeight, json) {
   console.log(json);
 
   // number of frames horizontal and vertical
   var animationWidth = (json.animation && json.animation.width) || 1;
-  var animationHeight = (json.animation && json.animation.height) || (image.height / image.width); // vertical strip of frames
+  var animationHeight = (json.animation && json.animation.height) || (imageHeight / imageWidth); // vertical strip of frames
 
   var defaultFrametime = (json.animation && json.animation.frametime) || 1;
 
-  var tileWidth = image.width / animationWidth;
-  var tileHeight = image.height / animationHeight;
+  var tileWidth = imageWidth / animationWidth;
+  var tileHeight = imageHeight / animationHeight;
 
   var frameCoords = [];
 
@@ -75,6 +73,10 @@ var parseMcmeta = function(image, data) {
   return frames;
 };
 
+var parseMcmeta = function(image, data) {
+  return parseFrameOffsets(image.width, image.height, JSON.parse(data));
+}
+
 var splitFrames = function(pixels, countTilesX, countTilesY) {
   var totalHeight = pixels.shape[0];
   var totalWidth = pixels.shape[1];
@@ -103,6 +105,10 @@ var splitFrames = function(pixels, countTilesX, countTilesY) {
       console.log(canvas.width,canvas.height);
     }
   }
+};
+
+var parse = function(pixels, mcmetaString) {
+  //TODO var 
 };
 
 // TODO
