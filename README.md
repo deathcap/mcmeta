@@ -14,7 +14,8 @@ data (e.g., from [get-pixels](https://github.com/mikolalysenko/get-pixels)),
 
 The `frames` return value will be an array of the animation frames, objects with
 `image` set to the image tile URL, and `time` the duration to remain on this frame.
-For an example, see demo.js and run `npm start`.
+For an example, see demo.js and run `npm start`, or view the live demo at
+[http://deathcap.github.io/mcmeta/](http://deathcap.github.io/mcmeta/).
 
 
 References:
