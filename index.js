@@ -73,10 +73,6 @@ var parseFrameOffsets = function(imageWidth, imageHeight, json) {
   return frames;
 };
 
-var parseMcmeta = function(image, data) {
-  return parseFrameOffsets(image.width, image.height, JSON.parse(data));
-}
-
 var splitFrames = function(pixels, countTilesX, countTilesY) {
   var totalHeight = pixels.shape[0];
   var totalWidth = pixels.shape[1];
@@ -113,6 +109,6 @@ var parse = function(pixels, mcmetaString) {
 
 // TODO
 module.exports = {
-  parseMcmeta: parseMcmeta,
+  parseFrameOffsets: parseFrameOffsets,
   splitFrames: splitFrames
 };
