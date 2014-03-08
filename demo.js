@@ -80,8 +80,8 @@ getPixels(waterFlow2, function(err, pixels) {
       document.body.appendChild(document.createTextNode(JSON.stringify(json)));
     } else {
       var inputField = document.createElement('textarea');
-      inputField.value = JSON.stringify(json);
-      inputField.rows = '5';
+      inputField.value = JSON.stringify(json, null, " ");
+      inputField.rows = '15';
       inputField.columns = '10';
       document.body.appendChild(inputField);
     }
@@ -99,7 +99,7 @@ getPixels(waterFlow2, function(err, pixels) {
     render(json);
 
     if (editableField) {
-      inputField.addEventListener('change', function() {
+      document.body.addEventListener('keyup', function() {
         while (output.firstChild) output.removeChild(output.firstChild);
         render(inputField.value);
       });
