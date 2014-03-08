@@ -73,7 +73,7 @@ var parseFrameOffsets = function(imageWidth, imageHeight, json) {
   return frames;
 };
 
-var splitFrames = function(pixels, countTilesX, countTilesY) {
+var splitTiles = function(pixels, countTilesX, countTilesY) {
   var totalHeight = pixels.shape[0];
   var totalWidth = pixels.shape[1];
   countTilesX = countTilesX || 1; // assume vertical strip (1xN)
@@ -110,5 +110,5 @@ var parse = function(pixels, mcmetaString) {
 // TODO
 module.exports = {
   parseFrameOffsets: parseFrameOffsets,
-  splitFrames: splitFrames
+  splitTiles: splitTiles
 };
