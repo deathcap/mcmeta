@@ -2,7 +2,6 @@
 
 var mcmeta = require('./');
 var getPixels = require('get-pixels');
-var splitTiles = mcmeta.splitTiles;
 var getFrames = mcmeta.getFrames;
 
 // 16x32 test from https://github.com/deathcap/ProgrammerArt/commit/eeed8860d062c894b08381b7951a13eef6fe5ccd
@@ -22,27 +21,37 @@ var showFrames = function(frames) {
   });
 };
 
+var exampleJsons = [
+  {animation:{}},
+
+  {animation:{frametime:10}},
+
+  {},
+
+  {animation:
+      {
+        frametime: 5,
+        frames: [
+          {index:1, time:3},
+          {index:0, time:4},
+          1,
+          0
+        ]
+      }
+   }
+];
+
 getPixels(waterFlow2, function(err, pixels) {
   console.log(err, pixels)
   window.pixels = pixels;
 
-  //splitTiles(pixels);
-  var frames = getFrames(pixels, {animation:{frametime:10}});
-  showFrames(frames);
+  exampleJsons.forEach(function(json) {
+    document.body.appendChild(document.createTextNode(JSON.stringify(json)));
+    document.body.appendChild(document.createElement('br'));
+    var frames = getFrames(pixels, json);
+    showFrames(frames);
 
-  document.body.appendChild(document.createElement('hr'));
-  showFrames(getFrames(pixels, {}));
+    document.body.appendChild(document.createElement('hr'));
+  });
 
-  document.body.appendChild(document.createElement('hr'));
-  showFrames(getFrames(pixels, {animation:
-    {
-      frametime: 5,
-      frames: [
-        {index:1, time:3},
-        {index:0, time:4},
-        1,
-        0
-      ]
-    }
-  }));
 });
