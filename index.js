@@ -31,6 +31,7 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
   var tileWidth = imageWidth / countTilesX;
   var tileHeight = imageHeight / countTilesY;
 
+  // TODO remove - not really needed, splitFrames uses frame indices not offsets
   var frameCoords = [];
 
   for (var j = 0; j < countTilesX; j += 1) {
@@ -43,12 +44,13 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
       frameCoords.push([sx, sy, ex, ey]);
     }
   }
+  //*/
 
   var frames = [];
   if (json.animation) {
     var frameInfos = json.animation.frames || upTo(countTilesX * countTilesY);
 
-    for (i = 0; i < frameInfos.length; i += 1) {
+    for (var i = 0; i < frameInfos.length; i += 1) {
       var frameInfo = frameInfos[i];
 
       var index = (typeof frameInfo === 'number') ? frameInfo : frameInfo.index;
@@ -60,12 +62,12 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
         index = frameInfo.index;
       }
 
-      var coords = frameCoords[index];
-
-      frames.push({index:index, time:time, coords:coords}); // TODO: crop image
+      frames.push({index:index, time:time, coords:frameCoords[index]});
+      //frames.push({index:index, time:time});
     }
   } else {
     frames.push({coords:[0, 0, tileWidth, tileHeight]}); // TODO: or full texture?
+    //frames.push({index:0, time:0});
   }
 
   return frames;
@@ -93,11 +95,13 @@ var splitTiles = function(pixels, countTilesX, countTilesY) {
       console.log(tilePixels);
 
       var canvas = savePixels(tilePixels, 'canvas');
+      /* debug
       document.body.appendChild(document.createTextNode([sx,sy,ex,ey].join(',')));
       document.body.appendChild(document.createElement('br'));
       document.body.appendChild(canvas);
       document.body.appendChild(document.createElement('br'));
       console.log(canvas.width,canvas.height);
+      */
 
       tiles.push(canvas.toDataURL());
     }
@@ -137,16 +141,14 @@ var getFrames = function(pixels, mcmetaString) {
   for (var i = 0; i < framesInfo.length; i += 1) {
     var frameInfo = framesInfo[i];
 
-    var tile = tiles[frameInfo.index];
-    var page = {frameimage:tile, frametime:frameInfo.time};
+    var image = tiles[frameInfo.index];
+    var page = {index:frameInfo.index, image:image, time:frameInfo.time};
 
     flipbook.push(page);
-    console.log(i, page.frametime, page.frameimage);
+    console.log(i, page.index, page.image, page.time);
   }
 
-  console.log('FB',page); // TODO
-
-  return page;
+  return flipbook;
 };
 
 // TODO

@@ -14,5 +14,15 @@ getPixels(waterFlow2, function(err, pixels) {
   window.pixels = pixels;
 
   //splitTiles(pixels);
-  getFrames(pixels, {animation:{frametime:10}});
+  var frames = getFrames(pixels, {animation:{frametime:10}});
+  frames.forEach(function(frame) {
+    var img = new Image();
+    img.width = img.height = '64';
+    img.src = frame.image;
+    
+    document.body.appendChild(img);
+    document.body.appendChild(document.createTextNode('('+frame.index+') '));
+    document.body.appendChild(document.createTextNode('dt='+frame.time));
+    document.body.appendChild(document.createElement('br'));
+  });
 });
