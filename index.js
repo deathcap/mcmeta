@@ -31,21 +31,6 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
   var tileWidth = imageWidth / countTilesX;
   var tileHeight = imageHeight / countTilesY;
 
-  // TODO remove - not really needed, splitFrames uses frame indices not offsets
-  var frameCoords = [];
-
-  for (var j = 0; j < countTilesX; j += 1) {
-    for (var i = 0; i < countTilesY; i += 1) { // assuming counted vertical then horizontal (not verified)
-      var sx = j * tileWidth;
-      var sy = i * tileHeight;
-      var ex = (j + 1) * tileWidth;
-      var ey = (i + 1) * tileHeight;
-
-      frameCoords.push([sx, sy, ex, ey]);
-    }
-  }
-  //*/
-
   var frames = [];
   if (json.animation) {
     var frameInfos = json.animation.frames || upTo(countTilesX * countTilesY);
@@ -62,12 +47,10 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
         index = frameInfo.index;
       }
 
-      frames.push({index:index, time:time, coords:frameCoords[index]});
-      //frames.push({index:index, time:time});
+      frames.push({index:index, time:time});
     }
   } else {
-    frames.push({coords:[0, 0, tileWidth, tileHeight]}); // TODO: or full texture?
-    //frames.push({index:0, time:0});
+    frames.push({index:0, time:0});
   }
 
   return frames;
