@@ -14,5 +14,5 @@ getPixels(waterFlow2, function(err, pixels) {
   window.pixels = pixels;
 
   //splitTiles(pixels);
-  getFrames(pixels, {animation:{}});
+  getFrames(pixels, {animation:{frametime:10}});
 });

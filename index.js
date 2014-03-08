@@ -78,6 +78,7 @@ var splitTiles = function(pixels, countTilesX, countTilesY) {
   countTilesY = countTilesY || totalHeight / (totalWidth / countTilesX); // e.g., 2 for 16x32 (16x(16*2))
   var tileWidth = totalWidth / countTilesX;
   var tileHeight = totalHeight / countTilesY;
+  var tiles = [];
 
   console.log(countTilesY,tileWidth,tileHeight);
   for (var j = 0; j < countTilesX; j += 1) {
@@ -97,8 +98,12 @@ var splitTiles = function(pixels, countTilesX, countTilesY) {
       document.body.appendChild(canvas);
       document.body.appendChild(document.createElement('br'));
       console.log(canvas.width,canvas.height);
+
+      tiles.push(canvas.toDataURL());
     }
   }
+
+  return tiles;
 };
 
 var getFrames = function(pixels, mcmetaString) {
@@ -127,11 +132,21 @@ var getFrames = function(pixels, mcmetaString) {
 
   var tiles = splitTiles(pixels, countTilesX, countTilesY);
 
+  var flipbook = [];
+
   for (var i = 0; i < framesInfo.length; i += 1) {
     var frameInfo = framesInfo[i];
 
-    console.log(i,frameInfo);
+    var tile = tiles[frameInfo.index];
+    var page = {image:tile, frametime:frameInfo.time};
+
+    flipbook.push(page);
+    console.log(i, page.frametime, page.image);
   }
+
+  console.log('FB',page); // TODO
+
+  return page;
 };
 
 // TODO
