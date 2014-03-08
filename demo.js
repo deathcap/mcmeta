@@ -12,19 +12,22 @@ var IMAGE_SCALED_SIZE = '64';
 var FRAME_TICKS_TO_MSEC = 50;
 
 var showFrames = function(frames) {
+  var node = document.createElement('div');
   frames.forEach(function(frame) {
     var img = new Image();
     img.width = img.height = IMAGE_SCALED_SIZE;
     img.src = frame.image;
     
-    document.body.appendChild(img);
-    document.body.appendChild(document.createTextNode('('+frame.index+') '));
-    document.body.appendChild(document.createTextNode('dt='+frame.time));
-    document.body.appendChild(document.createElement('br'));
+    node.appendChild(img);
+    node.appendChild(document.createTextNode('('+frame.index+') '));
+    node.appendChild(document.createTextNode('dt='+frame.time));
+    node.appendChild(document.createElement('br'));
   });
+  return node;
 };
 
 var showAnimated = function(frames) {
+  var node = document.createElement('div');
   var img = new Image();
   img.width = img.height = IMAGE_SCALED_SIZE;
   img.src = frames[0].image;
@@ -41,8 +44,9 @@ var showAnimated = function(frames) {
   if (frames[0].time && frames.length > 1)
     nextFrame(1);
 
-  document.body.appendChild(img);
-  document.body.appendChild(document.createElement('br'));
+  node.appendChild(img);
+  node.appendChild(document.createElement('br'));
+  return node;
 };
 
 var exampleJsons = [
@@ -69,14 +73,29 @@ getPixels(waterFlow2, function(err, pixels) {
   console.log(err, pixels)
   window.pixels = pixels;
 
-  exampleJsons.forEach(function(json) {
-    document.body.appendChild(document.createTextNode(JSON.stringify(json)));
-    document.body.appendChild(document.createElement('br'));
-    var frames = getFrames(pixels, json);
-    showAnimated(frames);
-    showFrames(frames);
+  exampleJsons.forEach(function(json, i) {
+    var editableField = false; //i === exampleJsons.length - 1;
+  
+    if (!editableField) {
+      document.body.appendChild(document.createTextNode(JSON.stringify(json)));
+    } else {
+      var inputField = document.createElement('textarea');
+      inputField.value = JSON.stringify(json);
+      inputField.rows = '5';
+      inputField.columns = '10';
+      document.body.appendChild(inputField);
+    }
 
-    document.body.appendChild(document.createElement('hr'));
+    var output = document.createElement('div');
+
+    output.appendChild(document.createElement('br'));
+    var frames = getFrames(pixels, json);
+    output.appendChild(showAnimated(frames));
+    output.appendChild(showFrames(frames));
+
+    output.appendChild(document.createElement('hr'));
+
+    document.body.appendChild(output);
   });
 
 });
