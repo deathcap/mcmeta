@@ -11,22 +11,30 @@ var upTo = function(n) {
   return a;
 };
 
-var parseFrameOffsets = function(imageWidth, imageHeight, json) {
+// number of frames horizontal and vertical
+var getTileCountX = function(imageWidth, imageHeight, json) {
+  return (json.animation && json.animation.width) || 1;
+};
+
+var getTileCountY = function(imageWidth, imageHeight, json) {
+  return (json.animation && json.animation.height) || (imageHeight / imageWidth); // vertical strip of frames
+};
+
+var parseFramesInfo = function(imageWidth, imageHeight, json) {
   console.log(json);
 
-  // number of frames horizontal and vertical
-  var animationWidth = (json.animation && json.animation.width) || 1;
-  var animationHeight = (json.animation && json.animation.height) || (imageHeight / imageWidth); // vertical strip of frames
+  var countTilesX = getTileCountX(imageWidth, imageHeight, json);
+  var countTilesY = getTileCountY(imageWidth, imageHeight, json);
 
   var defaultFrametime = (json.animation && json.animation.frametime) || 1;
 
-  var tileWidth = imageWidth / animationWidth;
-  var tileHeight = imageHeight / animationHeight;
+  var tileWidth = imageWidth / countTilesX;
+  var tileHeight = imageHeight / countTilesY;
 
   var frameCoords = [];
 
-  for (var j = 0; j < animationWidth; j += 1) {
-    for (var i = 0; i < animationHeight; i += 1) { // assuming counted vertical then horizontal (not verified)
+  for (var j = 0; j < countTilesX; j += 1) {
+    for (var i = 0; i < countTilesY; i += 1) { // assuming counted vertical then horizontal (not verified)
       var sx = j * tileWidth;
       var sy = i * tileHeight;
       var ex = (j + 1) * tileWidth;
@@ -38,7 +46,7 @@ var parseFrameOffsets = function(imageWidth, imageHeight, json) {
 
   var frames = [];
   if (json.animation) {
-    var frameInfos = json.animation.frames || upTo(animationWidth * animationHeight);
+    var frameInfos = json.animation.frames || upTo(countTilesX * countTilesY);
 
     for (i = 0; i < frameInfos.length; i += 1) {
       var frameInfo = frameInfos[i];
@@ -58,16 +66,6 @@ var parseFrameOffsets = function(imageWidth, imageHeight, json) {
     }
   } else {
     frames.push({coords:[0, 0, tileWidth, tileHeight]}); // TODO: or full texture?
-  }
-
-  if (json.texture) {
-    if (json.texture.blur) {
-      // TODO: blur when close up
-    }
-
-    if (json.texture.clamp) {
-      // TODO: don't appear when otherwise might(?)
-    }
   }
 
   return frames;
@@ -103,12 +101,42 @@ var splitTiles = function(pixels, countTilesX, countTilesY) {
   }
 };
 
-var parse = function(pixels, mcmetaString) {
-  //TODO var 
+var getFrames = function(pixels, mcmetaString) {
+  var json = (typeof mcmetaString === 'string' ? JSON.parse(mcmetaString) : mcmetaString) || {};
+
+  if (json.texture) {
+    if (json.texture.blur) {
+      // TODO: blur when close up
+    }
+
+    if (json.texture.clamp) {
+      // TODO: don't appear when otherwise might(?)
+    }
+  }
+
+  var imageHeight = pixels.shape[0];
+  var imageWidth = pixels.shape[1];
+
+  console.log('wh',imageWidth,imageHeight);
+
+  var framesInfo = parseFramesInfo(imageWidth, imageHeight, json);
+  console.log('framesInfo',framesInfo);
+
+  var countTilesX = getTileCountX(imageWidth, imageHeight, json);
+  var countTilesY = getTileCountY(imageWidth, imageHeight, json);
+
+  var tiles = splitTiles(pixels, countTilesX, countTilesY);
+
+  for (var i = 0; i < framesInfo.length; i += 1) {
+    var frameInfo = framesInfo[i];
+
+    console.log(i,frameInfo);
+  }
 };
 
 // TODO
 module.exports = {
-  parseFrameOffsets: parseFrameOffsets,
+  getFrames: getFrames,
+  parseFramesInfo: parseFramesInfo,
   splitTiles: splitTiles
 };
