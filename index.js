@@ -52,7 +52,7 @@ var parseFramesInfo = function(imageWidth, imageHeight, json) {
       var frameInfo = frameInfos[i];
 
       var index = (typeof frameInfo === 'number') ? frameInfo : frameInfo.index;
-      var time = (typeof frameInfo === 'object' && 'time' in frameInfo) ? frameInfo.time : 1;
+      var time = (typeof frameInfo === 'object' && 'time' in frameInfo) ? frameInfo.time : defaultFrametime;
 
       if (typeof frameInfo === 'number') {
         index = frameInfo;
@@ -138,10 +138,10 @@ var getFrames = function(pixels, mcmetaString) {
     var frameInfo = framesInfo[i];
 
     var tile = tiles[frameInfo.index];
-    var page = {image:tile, frametime:frameInfo.time};
+    var page = {frameimage:tile, frametime:frameInfo.time};
 
     flipbook.push(page);
-    console.log(i, page.frametime, page.image);
+    console.log(i, page.frametime, page.frameimage);
   }
 
   console.log('FB',page); // TODO
