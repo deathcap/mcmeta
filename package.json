@@ -10,7 +10,6 @@
     "voxel"
   ],
   "dependencies": {
-    "get-pixels": "~1.0.1",
     "save-pixels": "~0.3.0"
   },
   "scripts": {
@@ -20,6 +19,7 @@
   "peerDependencies": {},
   "license": "MIT",
   "devDependencies": {
+    "get-pixels": "~1.0.1",
     "tape": "~2.10.2"
   }
 }
